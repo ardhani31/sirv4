@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "covsirphy"
+version = "2.22.2"
+description = "COVID-19 data analysis with phase-dependent SIR-derived ODE models"
+authors = ["Hirokazu Takaya <lisphilar@outlook.jp>"]
+license = "Apache-2.0"
+repository = "https://github.com/lisphilar/covid19-sir"
+documentation = "https://lisphilar.github.io/covid19-sir/index.html"
+readme = "docs/README.rst"
+keywords = ["covid19", "covid", "data engineering", "data science"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering",
+]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+numpy = "^1.18.5"
+optuna = "^2.3.0"
+pandas = "^1.1.5"
+seaborn = "^0.11.1"
+scipy = "^1.4.1"
+scikit-learn = ">=0.24,<1.1"
+japanmap = ">=0.0.21,<0.0.25"
+better-exceptions = "^0.3.2"
+requests = "^2.25.1"
+ruptures = "^1.1.1"
+covid19dh = "^2.0.3"
+tabulate = "^0.8.7"
+matplotlib = "^3.2.1"
+country-converter = "^0.7.1"
+wbdata = "^0.3.0"
+geopandas = ">=0.9,<0.11"
+mapclassify = "^2.4.2"
+Unidecode = "^1.2.0"
+descartes = "^1.1.0"
+lightgbm = "^3.2.1"
+funcparserlib = "1.0.0a0"
+
+[tool.poetry.dev-dependencies]
+autopep8 = "^1.5.6"
+flake8 = "^4.0.1"
+kaggle = "^1.5.10"
+Sphinx = "^4.3.2"
+sphinx-rtd-theme = "^0.5.0"
+sphinxcontrib-seqdiag = "^3.0.0"
+nbsphinx = "^0.8.7"
+jupyter = "^1.0.0"
+pytest = "^6.2.5"
+pytest-profiling = "^1.7.0"
+pytest-cov = "^2.12.1"
+sphinx-copybutton = "^0.3.2"
+plotly = "^5.5.0"
+recommonmark = "^0.7.1"
+Pillow = "^9.0.0"
+sphinx-markdown-tables = "^0.0.15"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

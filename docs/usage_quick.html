@@ -1,0 +1,3633 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage: scenario analysis &mdash; CovsirPhy  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="covsirphy package" href="covsirphy.html" />
+    <link rel="prev" title="Usage: S-R trend analysis" href="usage_phases.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> CovsirPhy
+          </a>
+              <div class="version">
+                2.22.2-alpha
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">CovsirPhy introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="markdown/INSTALLATION.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="markdown/WORKFLOW.html">Workflow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_quickest.html">Usage: quickest tour</a></li>
+<li class="toctree-l1"><a class="reference internal" href="markdown/LOADING.html">Usage: data loading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_dataset.html">Usage: exploratory data analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_theoretical.html">Usage: SIR-derived models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_phases.html">Usage: S-R trend analysis</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage: scenario analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Preparation">Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Dataset-preparation">Dataset preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Start-scenario-analysis">Start scenario analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Display/save-figures">Display/save figures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Backup/restore-scenario">Backup/restore scenario</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Check-records">Check records</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#S-R-trend-analysis">S-R trend analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Parameter-estimation-of-ODE-models">Parameter estimation of ODE models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Evaluation-of-estimation-accuracy">Evaluation of estimation accuracy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Get-parameter-value">Get parameter value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Show-parameter-history">Show parameter history</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Show-the-history-of-reproduction-number">Show the history of reproduction number</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Simulate-the-number-of-cases">Simulate the number of cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Main-scenario">Main scenario</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Medicine-scenario">Medicine scenario</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Short-term-prediction-of-parameter-values">Short-term prediction of parameter values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Compare-the-scenarios">Compare the scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Change-rate-of-parameters-in-main-scenario">Change rate of parameters in main scenario</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Retrospective-analysis">Retrospective analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="covsirphy.html">covsirphy package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="markdown/TERM.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CODE_OF_CONDUCT.html">Contributor Covenant Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SECURITY.html">Security policy of CovsirPhy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Guideline of contribution</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CovsirPhy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Usage: scenario analysis</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage_quick.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Usage:-scenario-analysis">
+<h1>Usage: scenario analysis<a class="headerlink" href="#Usage:-scenario-analysis" title="Permalink to this headline"></a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/lisphilar/covid19-sir/blob/master/example/usage_quick.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>This is a quick tour of CovsirPhy. Details scenario analysis will be explained. “Scenario analysis” means that we calculate the number of cases in the future phases with some sets of ODE parameter values. With this analysis, we can estimate the impact of our activities against the outbreak on the number of cases.</p>
+<section id="Preparation">
+<h2>Preparation<a class="headerlink" href="#Preparation" title="Permalink to this headline"></a></h2>
+<p>Prepare the packages.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !pip install covsirphy --upgrade</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">import</span> <span class="nn">covsirphy</span> <span class="k">as</span> <span class="nn">cs</span>
+<span class="n">cs</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;2.22.2-alpha&#39;
+</pre></div></div>
+</div>
+</section>
+<section id="Dataset-preparation">
+<h2>Dataset preparation<a class="headerlink" href="#Dataset-preparation" title="Permalink to this headline"></a></h2>
+<div class="line-block">
+<div class="line">Download the datasets to “../input” directory and load them.</div>
+<div class="line">Please refer to <a class="reference external" href="https://lisphilar.github.io/covid19-sir/usage_dataset.html">Usage: datasets</a> for the details.</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loader</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="s2">&quot;../input&quot;</span><span class="p">)</span>
+<span class="c1"># The number of cases and population values</span>
+<span class="n">jhu_data</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">jhu</span><span class="p">()</span>
+<span class="c1"># Government Response Tracker (OxCGRT)</span>
+<span class="n">oxcgrt_data</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">oxcgrt</span><span class="p">()</span>
+<span class="c1"># The number of tests</span>
+<span class="n">pcr_data</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">pcr</span><span class="p">()</span>
+<span class="c1"># The number of vaccinations</span>
+<span class="n">vaccine_data</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">vaccine</span><span class="p">()</span>
+<span class="c1"># Mobility data</span>
+<span class="n">mobility_data</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">mobility</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>From development version 2.22.0, we can collect datasets and get them as dictionary with <code class="docutils literal notranslate"><span class="pre">DataLoader.collect()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_dict</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+<span class="n">snl</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">Scenario</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="s2">&quot;Japan&quot;</span><span class="p">,</span> <span class="n">province</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="o">**</span><span class="n">data_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="Start-scenario-analysis">
+<h2>Start scenario analysis<a class="headerlink" href="#Start-scenario-analysis" title="Permalink to this headline"></a></h2>
+<p>As an example, we will analysis the number of cases in Japan. <code class="docutils literal notranslate"><span class="pre">covsirphy.Scenario</span></code> is the interface for analysis. Please specify the area (country: required, province: optional) when creating the instance and register the datasets with <code class="docutils literal notranslate"><span class="pre">Scenario.register()</span></code>. As the extra datasets, we can select <code class="docutils literal notranslate"><span class="pre">OxCGRTData</span></code>, <code class="docutils literal notranslate"><span class="pre">PCRData</span></code> and <code class="docutils literal notranslate"><span class="pre">VaccineData</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Specify country and province (optinal) names</span>
+<span class="n">snl</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">Scenario</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="s2">&quot;Japan&quot;</span><span class="p">,</span> <span class="n">province</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="c1"># Register datasets</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">jhu_data</span><span class="p">,</span> <span class="n">extras</span><span class="o">=</span><span class="p">[</span><span class="n">oxcgrt_data</span><span class="p">,</span> <span class="n">pcr_data</span><span class="p">,</span> <span class="n">vaccine_data</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="line-block">
+<div class="line">We call <code class="docutils literal notranslate"><span class="pre">JHUData</span></code> as “the main datasets” because they are required to calculate the number of susceptible/infected/recovered/fatal cases. These variables are used in SIR-F model.</div>
+<div class="line">The other datasets are called as “the extra datasets” and they will be used to predict the futute parameter values of SIR-F model for forecasting the number of cases with some scenarios.</div>
+</div>
+<p>Additional information:</p>
+<ul class="simple">
+<li><p>Details of the datasets: <a class="reference external" href="https://lisphilar.github.io/covid19-sir/usage_dataset.html">Usage: datasets</a></p></li>
+<li><p>Details of SIR-F model: <a class="reference external" href="https://lisphilar.github.io/covid19-sir/usage_theoretical.html">Usage: SIR-derived models</a></p></li>
+</ul>
+<section id="Display/save-figures">
+<h3>Display/save figures<a class="headerlink" href="#Display/save-figures" title="Permalink to this headline"></a></h3>
+<p>We have intactive mode and script mode to display/save figures.</p>
+<p>When use use interactive shells, including Jupyter Notebook, we can choose either “interactive shell mode” or “script mode” as follows.</p>
+<div class="line-block">
+<div class="line">Interactive mode:</div>
+<div class="line">Figures will be displayed as the output of code cells.</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Choose interactive mode (default is True when we use interactive shells)</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">interactive</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</div>
+<p>When you want to turn-off interactive mode temporarlly, set <code class="docutils literal notranslate"><span class="pre">False</span></code> as <code class="docutils literal notranslate"><span class="pre">Scenario.interactive</span></code> or apply <code class="docutils literal notranslate"><span class="pre">show_figure=False</span></code> as an argument of methods, including <code class="docutils literal notranslate"><span class="pre">Scenario.records()</span></code>. Methods with figures will be shown later in this tutorial.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># apply &quot;show_figures=False&quot; to turn-off intaractive mode temporally</span>
+<span class="c1"># snl.records(show_figure=False)</span>
+</pre></div>
+</div>
+</div>
+<div class="line-block">
+<div class="line">Script mode:</div>
+<div class="line">In script mode, figures will not be displayed. When filenames were applied to the methods as <code class="docutils literal notranslate"><span class="pre">filename</span></code> argument, figures will be saved in your local environment.</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stop displaying figures</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">interactive</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># With this mode we can save figures, specifying &quot;filename&quot; argument</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;records.jpg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">covsirphy</span></code> uses Matplotlib backend and <code class="docutils literal notranslate"><span class="pre">Scenario.records()</span></code> etc. accepts keyword arguments of <code class="docutils literal notranslate"><span class="pre">matplotlib.pyplot.savefig()</span></code>. For example, we can export TIFF images with high resolution by specifying <code class="docutils literal notranslate"><span class="pre">filename</span></code> (.tiff) and <code class="docutils literal notranslate"><span class="pre">dpi</span></code> argument.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">snl</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;records.tiff&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When we run codes as a script (eg. <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">scenario_analysis.py</span></code>), only “script mode” is selectable and <code class="docutils literal notranslate"><span class="pre">Scenario.interactive</span></code> is always <code class="docutils literal notranslate"><span class="pre">False</span></code>. Figures will be saved when filenames are specified with <code class="docutils literal notranslate"><span class="pre">filename</span></code> argument.</p>
+<p>Because some methods, including <code class="docutils literal notranslate"><span class="pre">Scenario.summary()</span></code>, return dataframes (<code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>), we can save them as CSV files etc. using <code class="docutils literal notranslate"><span class="pre">.to_csv(filename,</span> <span class="pre">index=True)</span></code>.</p>
+<p>We can produce filenames more easily with <code class="docutils literal notranslate"><span class="pre">Filer</span></code> class. Please refer to the scripts in <a class="reference external" href="https://github.com/lisphilar/covid19-sir/tree/master/example">example directory of the repository</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">filer</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">Filer</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;jpn&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">numbering</span><span class="o">=</span><span class="s2">&quot;01&quot;</span><span class="p">)</span>
+<span class="n">filer</span><span class="o">.</span><span class="n">png</span><span class="p">(</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+<span class="c1"># -&gt; {&quot;filename&quot;: &quot;&lt;absolute path&gt;/output/jpn_01_records.png&quot;}</span>
+<span class="n">filer</span><span class="o">.</span><span class="n">jpg</span><span class="p">(</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+<span class="c1"># -&gt; {&quot;filename&quot;: &quot;&lt;absolute path&gt;/output/jpn_01_records.jpg&quot;}</span>
+<span class="n">filer</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># -&gt; {&quot;path_or_buf&quot;: &quot;&lt;absolute path&gt;/output/jpn_01_records.csv&quot;, index: True}</span>
+</pre></div>
+</div>
+<p>We can save files more easily with <code class="docutils literal notranslate"><span class="pre">Filer</span></code> as follows.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">record_df</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="o">**</span><span class="n">filer</span><span class="o">.</span><span class="n">png</span><span class="p">(</span><span class="s2">&quot;records&quot;</span><span class="p">))</span>
+<span class="n">record_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="o">**</span><span class="n">filer</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="Backup/restore-scenario">
+<h3>Backup/restore scenario<a class="headerlink" href="#Backup/restore-scenario" title="Permalink to this headline"></a></h3>
+<p>We have <code class="docutils literal notranslate"><span class="pre">Scenario.backup(filename)</span></code> and <code class="docutils literal notranslate"><span class="pre">Scenario.restore(filename)</span></code> to backup/restore timepoints and phase information. This will be helpful when we perform parameter estimation using a server and simulate with the estimated parameter values using local machines.</p>
+<p>Note that we need to execute <code class="docutils literal notranslate"><span class="pre">Scenario.register()</span></code> in advance to set timepoints with <code class="docutils literal notranslate"><span class="pre">Scenario.restore()</span></code>.</p>
+<p>Backup information:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backupfile_dict</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">Filer</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">backup</span><span class="p">(</span><span class="o">**</span><span class="n">backupfile_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Restore information:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backupfile_dict</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">Filer</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s2">&quot;output&quot;</span><span class="p">)</span>
+<span class="n">snl</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">Scenario</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="s2">&quot;Japan&quot;</span><span class="p">)</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">jhu_data</span><span class="p">)</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="o">**</span><span class="n">backupfile_dict</span><span class="p">)</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>After restoring information, we can skip <code class="docutils literal notranslate"><span class="pre">Scenario.trend()</span></code> and <code class="docutils literal notranslate"><span class="pre">Scenario.estiate()</span></code> (their functionarities will be explaiend later).</p>
+</section>
+</section>
+<section id="Check-records">
+<h2>Check records<a class="headerlink" href="#Check-records" title="Permalink to this headline"></a></h2>
+<p>Let’s see the records at first. <code class="docutils literal notranslate"><span class="pre">Scenario.records()</span></code> method return the records as a pandas dataframe and show a line plot. Some kind of complement will be done for analysis, if necessary.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Scenario.records()</span></code> shows the number of infected/recovered/fatal cases as default. Using <code class="docutils literal notranslate"><span class="pre">variables</span></code> argument, we can set the variables to show. Here, we chack the number of confirmed/fatal/recovered cases. They are cumurative values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snl</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="s2">&quot;CFR&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+<span class="c1"># This is the same as</span>
+<span class="c1"># snl.records(variables=[&quot;Confirmed&quot;, &quot;Fatal&quot;, &quot;Recovered&quot;])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_32_0.png" src="_images/usage_quick_32_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Confirmed</th>
+      <th>Fatal</th>
+      <th>Recovered</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>716</th>
+      <td>2022-01-22</td>
+      <td>2067062</td>
+      <td>18478</td>
+      <td>1781510</td>
+    </tr>
+    <tr>
+      <th>717</th>
+      <td>2022-01-23</td>
+      <td>2179501</td>
+      <td>18510</td>
+      <td>1796311</td>
+    </tr>
+    <tr>
+      <th>718</th>
+      <td>2022-01-24</td>
+      <td>2224314</td>
+      <td>18527</td>
+      <td>1813229</td>
+    </tr>
+    <tr>
+      <th>719</th>
+      <td>2022-01-25</td>
+      <td>2286927</td>
+      <td>18569</td>
+      <td>1838494</td>
+    </tr>
+    <tr>
+      <th>720</th>
+      <td>2022-01-26</td>
+      <td>2358536</td>
+      <td>18604</td>
+      <td>1838494</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The number of infected cases on date:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">)</span>
+<span class="c1"># This is the same as</span>
+<span class="c1"># snl.records(variables=[&quot;Infected&quot;])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_34_0.png" src="_images/usage_quick_34_0.png" />
+</div>
+</div>
+<p>All available variables can be retrieved with <code class="docutils literal notranslate"><span class="pre">variables=&quot;all&quot;</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">show_figure</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">compact</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;Confirmed&#39;, &#39;Infected&#39;, &#39;Fatal&#39;, &#39;Recovered&#39;, &#39;Susceptible&#39;, &#39;Cancel_events&#39;,
+ &#39;Contact_tracing&#39;, &#39;Gatherings_restrictions&#39;, &#39;Information_campaigns&#39;,
+ &#39;Internal_movement_restrictions&#39;, &#39;International_movement_restrictions&#39;,
+ &#39;School_closing&#39;, &#39;Stay_home_restrictions&#39;, &#39;Stringency_index&#39;,
+ &#39;Testing_policy&#39;, &#39;Tests&#39;, &#39;Tests_diff&#39;, &#39;Transport_closing&#39;,
+ &#39;Vaccinated_full&#39;, &#39;Vaccinated_once&#39;, &#39;Vaccinations&#39;, &#39;Workplace_closing&#39;]
+</pre></div></div>
+</div>
+<p>We can specify the variables to show.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snl</span><span class="o">.</span><span class="n">records</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Vaccinations&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_38_0.png" src="_images/usage_quick_38_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Vaccinations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>716</th>
+      <td>2022-01-22</td>
+      <td>242913133</td>
+    </tr>
+    <tr>
+      <th>717</th>
+      <td>2022-01-23</td>
+      <td>203348494</td>
+    </tr>
+    <tr>
+      <th>718</th>
+      <td>2022-01-24</td>
+      <td>203642290</td>
+    </tr>
+    <tr>
+      <th>719</th>
+      <td>2022-01-25</td>
+      <td>203935306</td>
+    </tr>
+    <tr>
+      <th>720</th>
+      <td>2022-01-26</td>
+      <td>203935306</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>We can calculate the number of daily new cases with <code class="docutils literal notranslate"><span class="pre">Scenario.record_diff()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Acceptable variables are the same as Scenario.records()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">records_diff</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">window</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_40_0.png" src="_images/usage_quick_40_0.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Scenario.show_complement()</span></code> method is useful to show the kinds of complement. The details of complement are explained in <a class="reference external" href="https://lisphilar.github.io/covid19-sir/usage_dataset.html#The-number-of-cases-(JHU-style)">Usage: datasets</a> section.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the details of complement</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">show_complement</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>index</th>
+      <th>Province</th>
+      <th>Monotonic_confirmed</th>
+      <th>Monotonic_fatal</th>
+      <th>Monotonic_recovered</th>
+      <th>Full_recovered</th>
+      <th>Partial_recovered</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Japan</td>
+      <td>-</td>
+      <td>False</td>
+      <td>True</td>
+      <td>True</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="S-R-trend-analysis">
+<h2>S-R trend analysis<a class="headerlink" href="#S-R-trend-analysis" title="Permalink to this headline"></a></h2>
+<p>S-R trend analysis finds the change points of SIR-derived ODE parameters. Details will be explained in <a class="reference external" href="https://lisphilar.github.io/covid19-sir/usage_phases.html">Usage (details: phases)</a>. Phases will be separated with dotted lines. i.e. Dot lines indicate the start dates of phases.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snl</span><span class="o">.</span><span class="n">trend</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_44_0.png" src="_images/usage_quick_44_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Type</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Population</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0th</th>
+      <td>Past</td>
+      <td>06Feb2020</td>
+      <td>08Aug2020</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>1st</th>
+      <td>Past</td>
+      <td>09Aug2020</td>
+      <td>14Nov2020</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>2nd</th>
+      <td>Past</td>
+      <td>15Nov2020</td>
+      <td>23Dec2020</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>3rd</th>
+      <td>Past</td>
+      <td>24Dec2020</td>
+      <td>16Jan2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>4th</th>
+      <td>Past</td>
+      <td>17Jan2021</td>
+      <td>10Feb2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>5th</th>
+      <td>Past</td>
+      <td>11Feb2021</td>
+      <td>03Apr2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>6th</th>
+      <td>Past</td>
+      <td>04Apr2021</td>
+      <td>21Apr2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>7th</th>
+      <td>Past</td>
+      <td>22Apr2021</td>
+      <td>06May2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>8th</th>
+      <td>Past</td>
+      <td>07May2021</td>
+      <td>24May2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>9th</th>
+      <td>Past</td>
+      <td>25May2021</td>
+      <td>01Jul2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>10th</th>
+      <td>Past</td>
+      <td>02Jul2021</td>
+      <td>27Jul2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>11th</th>
+      <td>Past</td>
+      <td>28Jul2021</td>
+      <td>06Aug2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>12th</th>
+      <td>Past</td>
+      <td>07Aug2021</td>
+      <td>19Aug2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>13th</th>
+      <td>Past</td>
+      <td>20Aug2021</td>
+      <td>31Aug2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>14th</th>
+      <td>Past</td>
+      <td>01Sep2021</td>
+      <td>15Sep2021</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>15th</th>
+      <td>Past</td>
+      <td>16Sep2021</td>
+      <td>06Jan2022</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>16th</th>
+      <td>Past</td>
+      <td>07Jan2022</td>
+      <td>15Jan2022</td>
+      <td>126529100</td>
+    </tr>
+    <tr>
+      <th>17th</th>
+      <td>Past</td>
+      <td>16Jan2022</td>
+      <td>26Jan2022</td>
+      <td>126529100</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Parameter-estimation-of-ODE-models">
+<h2>Parameter estimation of ODE models<a class="headerlink" href="#Parameter-estimation-of-ODE-models" title="Permalink to this headline"></a></h2>
+<p>Here, we will estimate the tau value [min] (using grid search) and parameter values of SIR-derived models using <a class="reference external" href="https://github.com/optuna/optuna">Optuna</a> package (automated hyperparameter optimization framework). As an example, we use SIR-F model. Details of models will be explained in <a class="reference external" href="https://lisphilar.github.io/covid19-sir/usage_theoretical.html">Usage (details: theoritical datasets)</a>.</p>
+<p><strong>We can select the model from SIR, SIRD and SIR-F model for parameter estimation. SIR-FV model (completely deprecated) and SEWIR-F model cannot be used.</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Estimate the tau value and parameter values of SIR-F model</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">SIRF</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+&lt;SIR-F model: parameter estimation&gt;
+Running optimization with 4 CPUs...
+         6th phase (04Apr2021 - 21Apr2021): finished   40 trials in 0 min  1 sec
+         4th phase (17Jan2021 - 10Feb2021): finished  151 trials in 0 min  5 sec
+         7th phase (22Apr2021 - 06May2021): finished  125 trials in 0 min  5 sec
+         2nd phase (15Nov2020 - 23Dec2020): finished  195 trials in 0 min  7 sec
+         8th phase (07May2021 - 24May2021): finished  128 trials in 0 min  4 sec
+         9th phase (25May2021 - 01Jul2021): finished   99 trials in 0 min  3 sec
+         0th phase (06Feb2020 - 08Aug2020): finished  353 trials in 0 min 14 sec
+         3rd phase (24Dec2020 - 16Jan2021): finished  226 trials in 0 min  8 sec
+         5th phase (11Feb2021 - 03Apr2021): finished  303 trials in 0 min 11 sec
+         1st phase (09Aug2020 - 14Nov2020): finished  100 trials in 0 min  4 sec
+        12th phase (07Aug2021 - 19Aug2021): finished   68 trials in 0 min  3 sec
+        14th phase (01Sep2021 - 15Sep2021): finished  187 trials in 0 min  7 sec
+        10th phase (02Jul2021 - 27Jul2021): finished  297 trials in 0 min 12 sec
+        13th phase (20Aug2021 - 31Aug2021): finished  210 trials in 0 min  8 sec
+        16th phase (07Jan2022 - 15Jan2022): finished  303 trials in 0 min 10 sec
+        15th phase (16Sep2021 - 06Jan2022): finished  264 trials in 0 min  8 sec
+        11th phase (28Jul2021 - 06Aug2021): finished  353 trials in 0 min  9 sec
+        17th phase (16Jan2022 - 26Jan2022): finished  414 trials in 0 min  9 sec
+Completed optimization. Total: 0 min 38 sec
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the summary of parameter estimation</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Type</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Population</th>
+      <th>ODE</th>
+      <th>Rt</th>
+      <th>theta</th>
+      <th>kappa</th>
+      <th>rho</th>
+      <th>sigma</th>
+      <th>tau</th>
+      <th>alpha1 [-]</th>
+      <th>1/alpha2 [day]</th>
+      <th>1/beta [day]</th>
+      <th>1/gamma [day]</th>
+      <th>RMSLE</th>
+      <th>Trials</th>
+      <th>Runtime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0th</th>
+      <td>Past</td>
+      <td>06Feb2020</td>
+      <td>08Aug2020</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.45</td>
+      <td>0.023587</td>
+      <td>0.003536</td>
+      <td>0.132217</td>
+      <td>0.085741</td>
+      <td>1440</td>
+      <td>0.024</td>
+      <td>282</td>
+      <td>7</td>
+      <td>11</td>
+      <td>1.184152</td>
+      <td>353</td>
+      <td>0 min 14 sec</td>
+    </tr>
+    <tr>
+      <th>1st</th>
+      <td>Past</td>
+      <td>09Aug2020</td>
+      <td>14Nov2020</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>0.88</td>
+      <td>0.000989</td>
+      <td>0.000765</td>
+      <td>0.075798</td>
+      <td>0.085252</td>
+      <td>1440</td>
+      <td>0.001</td>
+      <td>1307</td>
+      <td>13</td>
+      <td>11</td>
+      <td>0.152708</td>
+      <td>100</td>
+      <td>0 min  4 sec</td>
+    </tr>
+    <tr>
+      <th>2nd</th>
+      <td>Past</td>
+      <td>15Nov2020</td>
+      <td>23Dec2020</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.44</td>
+      <td>0.001528</td>
+      <td>0.000866</td>
+      <td>0.090749</td>
+      <td>0.062272</td>
+      <td>1440</td>
+      <td>0.002</td>
+      <td>1154</td>
+      <td>11</td>
+      <td>16</td>
+      <td>0.071365</td>
+      <td>195</td>
+      <td>0 min  7 sec</td>
+    </tr>
+    <tr>
+      <th>3rd</th>
+      <td>Past</td>
+      <td>24Dec2020</td>
+      <td>16Jan2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.54</td>
+      <td>0.000515</td>
+      <td>0.001253</td>
+      <td>0.102072</td>
+      <td>0.064925</td>
+      <td>1440</td>
+      <td>0.001</td>
+      <td>797</td>
+      <td>9</td>
+      <td>15</td>
+      <td>0.030854</td>
+      <td>226</td>
+      <td>0 min  8 sec</td>
+    </tr>
+    <tr>
+      <th>4th</th>
+      <td>Past</td>
+      <td>17Jan2021</td>
+      <td>10Feb2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>0.66</td>
+      <td>0.001136</td>
+      <td>0.001349</td>
+      <td>0.051872</td>
+      <td>0.076712</td>
+      <td>1440</td>
+      <td>0.001</td>
+      <td>741</td>
+      <td>19</td>
+      <td>13</td>
+      <td>0.059141</td>
+      <td>151</td>
+      <td>0 min  5 sec</td>
+    </tr>
+    <tr>
+      <th>5th</th>
+      <td>Past</td>
+      <td>11Feb2021</td>
+      <td>03Apr2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>0.81</td>
+      <td>0.008018</td>
+      <td>0.001586</td>
+      <td>0.058147</td>
+      <td>0.070019</td>
+      <td>1440</td>
+      <td>0.008</td>
+      <td>630</td>
+      <td>17</td>
+      <td>14</td>
+      <td>0.133665</td>
+      <td>303</td>
+      <td>0 min 11 sec</td>
+    </tr>
+    <tr>
+      <th>6th</th>
+      <td>Past</td>
+      <td>04Apr2021</td>
+      <td>21Apr2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.58</td>
+      <td>0.000991</td>
+      <td>0.000690</td>
+      <td>0.087031</td>
+      <td>0.054386</td>
+      <td>1440</td>
+      <td>0.001</td>
+      <td>1449</td>
+      <td>11</td>
+      <td>18</td>
+      <td>0.012842</td>
+      <td>40</td>
+      <td>0 min  1 sec</td>
+    </tr>
+    <tr>
+      <th>7th</th>
+      <td>Past</td>
+      <td>22Apr2021</td>
+      <td>06May2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.46</td>
+      <td>0.001145</td>
+      <td>0.000746</td>
+      <td>0.083277</td>
+      <td>0.056223</td>
+      <td>1440</td>
+      <td>0.001</td>
+      <td>1339</td>
+      <td>12</td>
+      <td>17</td>
+      <td>0.012206</td>
+      <td>125</td>
+      <td>0 min  5 sec</td>
+    </tr>
+    <tr>
+      <th>8th</th>
+      <td>Past</td>
+      <td>07May2021</td>
+      <td>24May2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.14</td>
+      <td>0.004694</td>
+      <td>0.000794</td>
+      <td>0.077863</td>
+      <td>0.067116</td>
+      <td>1440</td>
+      <td>0.005</td>
+      <td>1259</td>
+      <td>12</td>
+      <td>14</td>
+      <td>0.034596</td>
+      <td>128</td>
+      <td>0 min  4 sec</td>
+    </tr>
+    <tr>
+      <th>9th</th>
+      <td>Past</td>
+      <td>25May2021</td>
+      <td>01Jul2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>0.59</td>
+      <td>0.017965</td>
+      <td>0.001154</td>
+      <td>0.045297</td>
+      <td>0.074275</td>
+      <td>1440</td>
+      <td>0.018</td>
+      <td>866</td>
+      <td>22</td>
+      <td>13</td>
+      <td>0.033260</td>
+      <td>99</td>
+      <td>0 min  3 sec</td>
+    </tr>
+    <tr>
+      <th>10th</th>
+      <td>Past</td>
+      <td>02Jul2021</td>
+      <td>27Jul2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.40</td>
+      <td>0.000208</td>
+      <td>0.000467</td>
+      <td>0.074779</td>
+      <td>0.052793</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>2140</td>
+      <td>13</td>
+      <td>18</td>
+      <td>0.054551</td>
+      <td>297</td>
+      <td>0 min 12 sec</td>
+    </tr>
+    <tr>
+      <th>11th</th>
+      <td>Past</td>
+      <td>28Jul2021</td>
+      <td>06Aug2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>2.87</td>
+      <td>0.000207</td>
+      <td>0.000107</td>
+      <td>0.140566</td>
+      <td>0.048889</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>9328</td>
+      <td>7</td>
+      <td>20</td>
+      <td>0.020059</td>
+      <td>353</td>
+      <td>0 min  9 sec</td>
+    </tr>
+    <tr>
+      <th>12th</th>
+      <td>Past</td>
+      <td>07Aug2021</td>
+      <td>19Aug2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.48</td>
+      <td>0.000110</td>
+      <td>0.000176</td>
+      <td>0.112065</td>
+      <td>0.075528</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>5678</td>
+      <td>8</td>
+      <td>13</td>
+      <td>0.012195</td>
+      <td>68</td>
+      <td>0 min  3 sec</td>
+    </tr>
+    <tr>
+      <th>13th</th>
+      <td>Past</td>
+      <td>20Aug2021</td>
+      <td>31Aug2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.39</td>
+      <td>0.000280</td>
+      <td>0.000141</td>
+      <td>0.100273</td>
+      <td>0.072075</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>7105</td>
+      <td>9</td>
+      <td>13</td>
+      <td>0.028679</td>
+      <td>210</td>
+      <td>0 min  8 sec</td>
+    </tr>
+    <tr>
+      <th>14th</th>
+      <td>Past</td>
+      <td>01Sep2021</td>
+      <td>15Sep2021</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>0.59</td>
+      <td>0.000451</td>
+      <td>0.000345</td>
+      <td>0.054771</td>
+      <td>0.092366</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>2897</td>
+      <td>18</td>
+      <td>10</td>
+      <td>0.034678</td>
+      <td>187</td>
+      <td>0 min  7 sec</td>
+    </tr>
+    <tr>
+      <th>15th</th>
+      <td>Past</td>
+      <td>16Sep2021</td>
+      <td>06Jan2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>0.62</td>
+      <td>0.006483</td>
+      <td>0.000069</td>
+      <td>0.085197</td>
+      <td>0.136628</td>
+      <td>1440</td>
+      <td>0.006</td>
+      <td>14409</td>
+      <td>11</td>
+      <td>7</td>
+      <td>0.576148</td>
+      <td>264</td>
+      <td>0 min  8 sec</td>
+    </tr>
+    <tr>
+      <th>16th</th>
+      <td>Past</td>
+      <td>07Jan2022</td>
+      <td>15Jan2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>12.36</td>
+      <td>0.000112</td>
+      <td>0.000068</td>
+      <td>0.294952</td>
+      <td>0.023792</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>14629</td>
+      <td>3</td>
+      <td>42</td>
+      <td>0.073300</td>
+      <td>303</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>17th</th>
+      <td>Past</td>
+      <td>16Jan2022</td>
+      <td>26Jan2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>4.28</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.049110</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>13027</td>
+      <td>4</td>
+      <td>20</td>
+      <td>0.027066</td>
+      <td>414</td>
+      <td>0 min  9 sec</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Evaluation-of-estimation-accuracy">
+<h2>Evaluation of estimation accuracy<a class="headerlink" href="#Evaluation-of-estimation-accuracy" title="Permalink to this headline"></a></h2>
+<p>Accuracy of parameter estimation can be evaluated with RMSLE (Root Mean Squared Log Error) score.</p>
+<div class="math notranslate nohighlight">
+\begin{align*}
+\mathrm{RMSLE} = \sqrt{\cfrac{1}{n}\sum_{i=1}^{n}(log_{10}(A_{i} + 1) - log_{10}(P_{i} + 1))^2}
+\end{align*}</div><p>Where <span class="math notranslate nohighlight">\(A\)</span> is the observed (actual) values, <span class="math notranslate nohighlight">\(P\)</span> is estimated (predicted) values. Variables are <span class="math notranslate nohighlight">\(S (i=1), I (i=2), R (i=3)\ \mathrm{and}\ F (i=n=4)\)</span> for SIR-F model. When RMSLE score is low, hyperparameter estimation is highly accurate. Please refer to external sites, including <a class="reference external" href="https://medium.com/analytics-vidhya/root-mean-square-log-error-rmse-vs-rmlse-935c6cc1802a">Medium: What’s the Difference Between RMSE and RMSLE?</a></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show RMSLE scores with the number of optimization trials and runtime for phases</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="s2">&quot;End&quot;</span><span class="p">,</span> <span class="s2">&quot;RMSLE&quot;</span><span class="p">,</span> <span class="s2">&quot;Trials&quot;</span><span class="p">,</span> <span class="s2">&quot;Runtime&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Start</th>
+      <th>End</th>
+      <th>RMSLE</th>
+      <th>Trials</th>
+      <th>Runtime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0th</th>
+      <td>06Feb2020</td>
+      <td>08Aug2020</td>
+      <td>1.184152</td>
+      <td>353</td>
+      <td>0 min 14 sec</td>
+    </tr>
+    <tr>
+      <th>1st</th>
+      <td>09Aug2020</td>
+      <td>14Nov2020</td>
+      <td>0.152708</td>
+      <td>100</td>
+      <td>0 min  4 sec</td>
+    </tr>
+    <tr>
+      <th>2nd</th>
+      <td>15Nov2020</td>
+      <td>23Dec2020</td>
+      <td>0.071365</td>
+      <td>195</td>
+      <td>0 min  7 sec</td>
+    </tr>
+    <tr>
+      <th>3rd</th>
+      <td>24Dec2020</td>
+      <td>16Jan2021</td>
+      <td>0.030854</td>
+      <td>226</td>
+      <td>0 min  8 sec</td>
+    </tr>
+    <tr>
+      <th>4th</th>
+      <td>17Jan2021</td>
+      <td>10Feb2021</td>
+      <td>0.059141</td>
+      <td>151</td>
+      <td>0 min  5 sec</td>
+    </tr>
+    <tr>
+      <th>5th</th>
+      <td>11Feb2021</td>
+      <td>03Apr2021</td>
+      <td>0.133665</td>
+      <td>303</td>
+      <td>0 min 11 sec</td>
+    </tr>
+    <tr>
+      <th>6th</th>
+      <td>04Apr2021</td>
+      <td>21Apr2021</td>
+      <td>0.012842</td>
+      <td>40</td>
+      <td>0 min  1 sec</td>
+    </tr>
+    <tr>
+      <th>7th</th>
+      <td>22Apr2021</td>
+      <td>06May2021</td>
+      <td>0.012206</td>
+      <td>125</td>
+      <td>0 min  5 sec</td>
+    </tr>
+    <tr>
+      <th>8th</th>
+      <td>07May2021</td>
+      <td>24May2021</td>
+      <td>0.034596</td>
+      <td>128</td>
+      <td>0 min  4 sec</td>
+    </tr>
+    <tr>
+      <th>9th</th>
+      <td>25May2021</td>
+      <td>01Jul2021</td>
+      <td>0.033260</td>
+      <td>99</td>
+      <td>0 min  3 sec</td>
+    </tr>
+    <tr>
+      <th>10th</th>
+      <td>02Jul2021</td>
+      <td>27Jul2021</td>
+      <td>0.054551</td>
+      <td>297</td>
+      <td>0 min 12 sec</td>
+    </tr>
+    <tr>
+      <th>11th</th>
+      <td>28Jul2021</td>
+      <td>06Aug2021</td>
+      <td>0.020059</td>
+      <td>353</td>
+      <td>0 min  9 sec</td>
+    </tr>
+    <tr>
+      <th>12th</th>
+      <td>07Aug2021</td>
+      <td>19Aug2021</td>
+      <td>0.012195</td>
+      <td>68</td>
+      <td>0 min  3 sec</td>
+    </tr>
+    <tr>
+      <th>13th</th>
+      <td>20Aug2021</td>
+      <td>31Aug2021</td>
+      <td>0.028679</td>
+      <td>210</td>
+      <td>0 min  8 sec</td>
+    </tr>
+    <tr>
+      <th>14th</th>
+      <td>01Sep2021</td>
+      <td>15Sep2021</td>
+      <td>0.034678</td>
+      <td>187</td>
+      <td>0 min  7 sec</td>
+    </tr>
+    <tr>
+      <th>15th</th>
+      <td>16Sep2021</td>
+      <td>06Jan2022</td>
+      <td>0.576148</td>
+      <td>264</td>
+      <td>0 min  8 sec</td>
+    </tr>
+    <tr>
+      <th>16th</th>
+      <td>07Jan2022</td>
+      <td>15Jan2022</td>
+      <td>0.073300</td>
+      <td>303</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>17th</th>
+      <td>16Jan2022</td>
+      <td>26Jan2022</td>
+      <td>0.027066</td>
+      <td>414</td>
+      <td>0 min  9 sec</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Additionally, we can visualize the accuracy with <code class="docutils literal notranslate"><span class="pre">Scenario.estimate_accuracy()</span></code>, specifing phase name.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the accuracy for the 2nd phase</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">estimate_accuracy</span><span class="p">(</span><span class="n">phase</span><span class="o">=</span><span class="s2">&quot;2nd&quot;</span><span class="p">)</span>
+<span class="c1"># phase=&quot;last&quot; means the last phases</span>
+<span class="c1"># snl.estimate_accuracy(phase=&quot;last&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_51_0.png" src="_images/usage_quick_51_0.png" />
+</div>
+</div>
+<p>We can calculate total score for all phases using <code class="docutils literal notranslate"><span class="pre">Scenario.score()</span></code> method. Metrics can be selected from MAE, MSE, MSLE, RMSE, RMSLE and MAPE.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get total score</span>
+<span class="c1"># snl.score(metrics=&quot;RMSLE&quot;)</span>
+<span class="n">metrics_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MAE&quot;</span><span class="p">,</span> <span class="s2">&quot;MSE&quot;</span><span class="p">,</span> <span class="s2">&quot;MSLE&quot;</span><span class="p">,</span> <span class="s2">&quot;RMSE&quot;</span><span class="p">,</span> <span class="s2">&quot;RMSLE&quot;</span><span class="p">,</span> <span class="s2">&quot;MAPE&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">metrics</span> <span class="ow">in</span> <span class="n">metrics_list</span><span class="p">:</span>
+    <span class="n">metrics_name</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">metrics_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">metrics_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">snl</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+  MAE: 7938.631
+  MSE: 526047020.086
+ MSLE: 0.416
+ RMSE: 16052.282
+RMSLE: 0.645
+ MAPE: 8328432043218.996
+</pre></div></div>
+</div>
+</section>
+<section id="Get-parameter-value">
+<h2>Get parameter value<a class="headerlink" href="#Get-parameter-value" title="Permalink to this headline"></a></h2>
+<p>We can get the parameter values of a phase using <code class="docutils literal notranslate"><span class="pre">Scenario.get()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get parameter values</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Rt&quot;</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s2">&quot;4th&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.66
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># phase=&quot;last&quot; means the last phases</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Rt&quot;</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4.28
+</pre></div></div>
+</div>
+</section>
+<section id="Show-parameter-history">
+<h2>Show parameter history<a class="headerlink" href="#Show-parameter-history" title="Permalink to this headline"></a></h2>
+<p>We can get the history of parameter values with a dataframe and a figure.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the parameter values as a dataframe</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="o">*</span><span class="n">cs</span><span class="o">.</span><span class="n">SIRF</span><span class="o">.</span><span class="n">PARAMETERS</span><span class="p">,</span> <span class="s2">&quot;Rt&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>theta</th>
+      <th>kappa</th>
+      <th>rho</th>
+      <th>sigma</th>
+      <th>Rt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0th</th>
+      <td>0.023587</td>
+      <td>0.003536</td>
+      <td>0.132217</td>
+      <td>0.085741</td>
+      <td>1.45</td>
+    </tr>
+    <tr>
+      <th>1st</th>
+      <td>0.000989</td>
+      <td>0.000765</td>
+      <td>0.075798</td>
+      <td>0.085252</td>
+      <td>0.88</td>
+    </tr>
+    <tr>
+      <th>2nd</th>
+      <td>0.001528</td>
+      <td>0.000866</td>
+      <td>0.090749</td>
+      <td>0.062272</td>
+      <td>1.44</td>
+    </tr>
+    <tr>
+      <th>3rd</th>
+      <td>0.000515</td>
+      <td>0.001253</td>
+      <td>0.102072</td>
+      <td>0.064925</td>
+      <td>1.54</td>
+    </tr>
+    <tr>
+      <th>4th</th>
+      <td>0.001136</td>
+      <td>0.001349</td>
+      <td>0.051872</td>
+      <td>0.076712</td>
+      <td>0.66</td>
+    </tr>
+    <tr>
+      <th>5th</th>
+      <td>0.008018</td>
+      <td>0.001586</td>
+      <td>0.058147</td>
+      <td>0.070019</td>
+      <td>0.81</td>
+    </tr>
+    <tr>
+      <th>6th</th>
+      <td>0.000991</td>
+      <td>0.000690</td>
+      <td>0.087031</td>
+      <td>0.054386</td>
+      <td>1.58</td>
+    </tr>
+    <tr>
+      <th>7th</th>
+      <td>0.001145</td>
+      <td>0.000746</td>
+      <td>0.083277</td>
+      <td>0.056223</td>
+      <td>1.46</td>
+    </tr>
+    <tr>
+      <th>8th</th>
+      <td>0.004694</td>
+      <td>0.000794</td>
+      <td>0.077863</td>
+      <td>0.067116</td>
+      <td>1.14</td>
+    </tr>
+    <tr>
+      <th>9th</th>
+      <td>0.017965</td>
+      <td>0.001154</td>
+      <td>0.045297</td>
+      <td>0.074275</td>
+      <td>0.59</td>
+    </tr>
+    <tr>
+      <th>10th</th>
+      <td>0.000208</td>
+      <td>0.000467</td>
+      <td>0.074779</td>
+      <td>0.052793</td>
+      <td>1.40</td>
+    </tr>
+    <tr>
+      <th>11th</th>
+      <td>0.000207</td>
+      <td>0.000107</td>
+      <td>0.140566</td>
+      <td>0.048889</td>
+      <td>2.87</td>
+    </tr>
+    <tr>
+      <th>12th</th>
+      <td>0.000110</td>
+      <td>0.000176</td>
+      <td>0.112065</td>
+      <td>0.075528</td>
+      <td>1.48</td>
+    </tr>
+    <tr>
+      <th>13th</th>
+      <td>0.000280</td>
+      <td>0.000141</td>
+      <td>0.100273</td>
+      <td>0.072075</td>
+      <td>1.39</td>
+    </tr>
+    <tr>
+      <th>14th</th>
+      <td>0.000451</td>
+      <td>0.000345</td>
+      <td>0.054771</td>
+      <td>0.092366</td>
+      <td>0.59</td>
+    </tr>
+    <tr>
+      <th>15th</th>
+      <td>0.006483</td>
+      <td>0.000069</td>
+      <td>0.085197</td>
+      <td>0.136628</td>
+      <td>0.62</td>
+    </tr>
+    <tr>
+      <th>16th</th>
+      <td>0.000112</td>
+      <td>0.000068</td>
+      <td>0.294952</td>
+      <td>0.023792</td>
+      <td>12.36</td>
+    </tr>
+    <tr>
+      <th>17th</th>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.049110</td>
+      <td>4.28</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Scenario.history()</span></code> method shows the trajectories of parameters (and the number of cases).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;theta&quot;</span><span class="p">,</span> <span class="n">show_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_60_0.png" src="_images/usage_quick_60_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;kappa&quot;</span><span class="p">,</span> <span class="n">show_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_61_0.png" src="_images/usage_quick_61_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;rho&quot;</span><span class="p">,</span> <span class="n">show_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_62_0.png" src="_images/usage_quick_62_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">show_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_63_0.png" src="_images/usage_quick_63_0.png" />
+</div>
+</div>
+<div class="line-block">
+<div class="line">Notes on the history of <span class="math notranslate nohighlight">\(\sigma\)</span> value in japan (last updated: 28Dec2020):</div>
+<div class="line">In Japan, we experienced two waves and we are in third wave. In the first wave (Apr - May), recovery period was too long because collapse of the medical care system occurred and no medicines were found.</div>
+</div>
+<p>Sigma values: the first wave &lt; the second wave &gt; the third wave</p>
+<p>However, in the second wave (Jul - Oct), recovery period appears short because we have some effective medicines (not approved, in clinical study), yonger people (people un-associated to sever diseases) were infected.</p>
+<p>In the third wave (Nov - ), older people tend to be infected and we are facing with medical collapse at this time…</p>
+</section>
+<section id="Show-the-history-of-reproduction-number">
+<h2>Show the history of reproduction number<a class="headerlink" href="#Show-the-history-of-reproduction-number" title="Permalink to this headline"></a></h2>
+<p><span class="math notranslate nohighlight">\(R_0\)</span> (“R naught”) means “the average number of secondary infections caused by an infected host” (<a class="reference external" href="https://towardsdatascience.com/infection-modeling-part-1-87e74645568a">Infection Modeling — Part 1</a>). When this value is larger than 1, the infection disease is outbreaking.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;Rt&quot;</span><span class="p">,</span> <span class="n">show_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_66_0.png" src="_images/usage_quick_66_0.png" />
+</div>
+</div>
+</section>
+<section id="Simulate-the-number-of-cases">
+<h2>Simulate the number of cases<a class="headerlink" href="#Simulate-the-number-of-cases" title="Permalink to this headline"></a></h2>
+<p>We can compare the actual and simulated (with estimated parameter values) number of confirmed/infected/recovered/fatal cases using <code class="docutils literal notranslate"><span class="pre">Scenario.history()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compare the actual values and the main scenario</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s2">&quot;Infected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_68_0.png" src="_images/usage_quick_68_0.png" />
+</div>
+</div>
+<p>When we want to show only one scenario with all variables, we use <code class="docutils literal notranslate"><span class="pre">Scenario.simulate()</span></code> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span><span class="n">snl</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_70_0.png" src="_images/usage_quick_70_0.png" />
+</div>
+</div>
+</section>
+<section id="Main-scenario">
+<h2>Main scenario<a class="headerlink" href="#Main-scenario" title="Permalink to this headline"></a></h2>
+<p>To investigate the effect of parameter changes, we will perform scenario analysis. In the main scenario, we will assume that the parameter values do not change after the last past phase.</p>
+<p>i.e. If the parameter velues will not be changed until 28Feb2022, how many cases will be? We call this scenario as “Main” scenario.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clear future phases in Main scenario</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
+<span class="c1"># Add one future phase 30 days with the parameter set of the last past phase</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
+<span class="c1"># Add one future phase until 28Feb2022 with the same parameter set</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;28Feb2022&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
+<span class="c1"># Simulate the number of cases</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_72_0.png" src="_images/usage_quick_72_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Date</th>
+      <th>Infected</th>
+      <th>Fatal</th>
+      <th>Recovered</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>749</th>
+      <td>2022-02-24</td>
+      <td>32366302</td>
+      <td>41736</td>
+      <td>15212800</td>
+    </tr>
+    <tr>
+      <th>750</th>
+      <td>2022-02-25</td>
+      <td>35015285</td>
+      <td>44531</td>
+      <td>16866462</td>
+    </tr>
+    <tr>
+      <th>751</th>
+      <td>2022-02-26</td>
+      <td>37598234</td>
+      <td>47531</td>
+      <td>18649824</td>
+    </tr>
+    <tr>
+      <th>752</th>
+      <td>2022-02-27</td>
+      <td>40078607</td>
+      <td>50727</td>
+      <td>20557701</td>
+    </tr>
+    <tr>
+      <th>753</th>
+      <td>2022-02-28</td>
+      <td>42412636</td>
+      <td>54106</td>
+      <td>22583968</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Medicine-scenario">
+<h2>Medicine scenario<a class="headerlink" href="#Medicine-scenario" title="Permalink to this headline"></a></h2>
+<p>To investigate the effect of new medicines, we will assume that <span class="math notranslate nohighlight">\(\sigma\)</span> will be changed in the future phases.</p>
+<p>If <span class="math notranslate nohighlight">\(\sigma\)</span> will be 1.2 times in 30 days, how many cases will be? We will call this scenario as “Medicine” scenario.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calcuate the current sigma value of the last phase</span>
+<span class="n">sigma_current</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+<span class="n">sigma_current</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.0491102750972212
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sigma value will be double</span>
+<span class="n">sigma_new</span> <span class="o">=</span> <span class="n">sigma_current</span> <span class="o">*</span> <span class="mf">1.2</span>
+<span class="n">sigma_new</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.05893233011666543
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize &quot;Medicine&quot; scenario (with the same past phases as that of Main scenario)</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Medicine&quot;</span><span class="p">)</span>
+<span class="c1"># Add 30 days as a new future phases with the same parameter set</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Medicine&quot;</span><span class="p">,</span> <span class="n">days</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_current</span><span class="p">)</span>
+<span class="c1"># Add a phase with doubled sigma value and the same end date with main date</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Medicine&quot;</span><span class="p">,</span> <span class="n">end_date</span><span class="o">=</span><span class="s2">&quot;28Feb2022&quot;</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma_new</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;covsirphy.analysis.scenario.Scenario at 0x7f40c0b8b940&gt;
+</pre></div></div>
+</div>
+<p>Check summary of future phases.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Future&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>Type</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Population</th>
+      <th>ODE</th>
+      <th>Rt</th>
+      <th>theta</th>
+      <th>kappa</th>
+      <th>rho</th>
+      <th>sigma</th>
+      <th>tau</th>
+      <th>alpha1 [-]</th>
+      <th>1/alpha2 [day]</th>
+      <th>1/beta [day]</th>
+      <th>1/gamma [day]</th>
+      <th>RMSLE</th>
+      <th>Trials</th>
+      <th>Runtime</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>Phase</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">Main</th>
+      <th>18th</th>
+      <td>Future</td>
+      <td>27Jan2022</td>
+      <td>25Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>4.28</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.049110</td>
+      <td>1440</td>
+      <td>0.0</td>
+      <td>13027.0</td>
+      <td>4.0</td>
+      <td>20.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>19th</th>
+      <td>Future</td>
+      <td>26Feb2022</td>
+      <td>28Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>4.28</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.049110</td>
+      <td>1440</td>
+      <td>0.0</td>
+      <td>13027.0</td>
+      <td>4.0</td>
+      <td>20.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">Medicine</th>
+      <th>18th</th>
+      <td>Future</td>
+      <td>27Jan2022</td>
+      <td>25Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>4.28</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.049110</td>
+      <td>1440</td>
+      <td>0.0</td>
+      <td>13027.0</td>
+      <td>4.0</td>
+      <td>20.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>19th</th>
+      <td>Future</td>
+      <td>26Feb2022</td>
+      <td>28Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>3.56</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.058932</td>
+      <td>1440</td>
+      <td>0.0</td>
+      <td>13027.0</td>
+      <td>4.0</td>
+      <td>16.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Simulate the number of cases.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Medicine&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_80_0.png" src="_images/usage_quick_80_0.png" />
+</div>
+</div>
+</section>
+<section id="Short-term-prediction-of-parameter-values">
+<h2>Short-term prediction of parameter values<a class="headerlink" href="#Short-term-prediction-of-parameter-values" title="Permalink to this headline"></a></h2>
+<p>With extra datasets, we can predict the ODE parameter values in the future phases because <a class="reference external" href="https://github.com/OxCGRT/covid-policy-tracker">OxCGRT indicators</a> (policy measures), vaccinations and so on impact on parameter values with delay period (the number of days that indicators take for the ODE parameter values to be changed).</p>
+<p>OxCGRT indicators are</p>
+<ul class="simple">
+<li><p>school_closing,</p></li>
+<li><p>workplace_closing,</p></li>
+<li><p>cancel_events,</p></li>
+<li><p>gatherings_restrictions,</p></li>
+<li><p>transport_closing,</p></li>
+<li><p>stay_home_restrictions,</p></li>
+<li><p>internal_movement_restrictions,</p></li>
+<li><p>international_movement_restrictions,</p></li>
+<li><p>information_campaigns,</p></li>
+<li><p>testing_policy, and</p></li>
+<li><p>contact_tracing.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">Scenario.fit()</span></code> method learns the relationship of indicators (X) and the parameter values (y) with regresion models. X was registered with <code class="docutils literal notranslate"><span class="pre">Scenario.register()</span></code> and y was calculated with <code class="docutils literal notranslate"><span class="pre">Scenario.estimate()</span></code> in advance respectively.</p>
+<p>Regression models and abbreviations:</p>
+<ul class="simple">
+<li><p>“en”: Indicators -&gt; Parameters with Elastic Net</p></li>
+<li><p>“dt”: Indicators -&gt; Parameters with Decision Tree Regressor</p></li>
+<li><p>“lgbm”: Indicators -&gt; Parameters with Light Gradient Boosting Machine Regressor (Light GBM)</p></li>
+<li><p>“svr”: Indicators -&gt; Parameters with Epsilon-Support Vector Regressor (SVR)</p></li>
+</ul>
+<p>We can specify regressors with <code class="docutils literal notranslate"><span class="pre">regressors</span></code> argument of <code class="docutils literal notranslate"><span class="pre">Scenario.fit()</span></code> and abbreviations. When <code class="docutils literal notranslate"><span class="pre">regreesors=[&quot;en&quot;,</span> <span class="pre">&quot;svr&quot;]</span></code>, only Elastic Net and SVR will be used. As default, <code class="docutils literal notranslate"><span class="pre">regressors=None</span></code> and we use all registered regressors.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Scenario.fit()</span></code> has <code class="docutils literal notranslate"><span class="pre">delay</span></code> argument and we can apply the following values.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">delay=20</span></code>: Exact value of delay period [days].</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay=(7,</span> <span class="pre">31)</span></code> (default): All values 7, 9,…,31 will be inculded in X and some values will be selected by feature selection or PCA.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delay=None</span></code>: Delay period will be calculated with <code class="docutils literal notranslate"><span class="pre">Scenario.estimate_delay()</span></code> method. In this method, change point analysis will be done with one selected indicator (“Stringency_index” as default) and variable (“Confirmed” as default) to estimate delay period.</p></li>
+</ul>
+<p>When we use <code class="docutils literal notranslate"><span class="pre">delay=None</span></code>, the indicator used to estimate delay period (“Stringency_index” as default) will be automatically removed from X dataset. If you have some indicators to be removed additionally, please use <code class="docutils literal notranslate"><span class="pre">removed_cols</span></code> argument (list of indicator names) of <code class="docutils literal notranslate"><span class="pre">Scenario.fit()</span></code>.</p>
+<p>As an example, we only use he number of vaccinated (once/full) people and OxCGRT indicators (except for “Stringency_index” because this is calculated with the other OxCGRT indicators).</p>
+<p><code class="docutils literal notranslate"><span class="pre">Scenario.fit()</span></code> shows “predicted vs. actual parameter values” figure and train/test score when <code class="docutils literal notranslate"><span class="pre">show_figure=True</span></code> (default) via <code class="docutils literal notranslate"><span class="pre">Scenario.fit_accuracy()</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create Forecast scenario (copy Main scenario and delete future phases)</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">clear</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Forecast&quot;</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
+<span class="c1"># Fitting with linear regression model (Elastic Net regression)</span>
+<span class="n">fit_dict</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Forecast&quot;</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;MAPE&quot;</span><span class="p">,</span> <span class="n">regressors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">removed_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Stringency_index&quot;</span><span class="p">,</span> <span class="s2">&quot;Tests&quot;</span><span class="p">,</span> <span class="s2">&quot;Tests_diff&quot;</span><span class="p">,</span> <span class="s2">&quot;Vaccinations&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_86_0.png" src="_images/usage_quick_86_0.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Scenario.predict()</span></code> predicts the parameter values of future phases.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Short-term prediction</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Forecast&quot;</span><span class="p">)</span>
+<span class="c1"># We can select list of days to predict optionally</span>
+<span class="c1"># snl.predict(days=[1, 4], name=&quot;Forecast&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;covsirphy.analysis.scenario.Scenario at 0x7f40c0b8b940&gt;
+</pre></div></div>
+</div>
+<p>Show summary of future phases.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Future&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>Type</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Population</th>
+      <th>ODE</th>
+      <th>Rt</th>
+      <th>theta</th>
+      <th>kappa</th>
+      <th>rho</th>
+      <th>sigma</th>
+      <th>tau</th>
+      <th>alpha1 [-]</th>
+      <th>1/alpha2 [day]</th>
+      <th>1/beta [day]</th>
+      <th>1/gamma [day]</th>
+      <th>RMSLE</th>
+      <th>Trials</th>
+      <th>Runtime</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>Phase</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">Main</th>
+      <th>18th</th>
+      <td>Future</td>
+      <td>27Jan2022</td>
+      <td>25Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>4.28</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.049110</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>13027.0</td>
+      <td>4.0</td>
+      <td>20.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>19th</th>
+      <td>Future</td>
+      <td>26Feb2022</td>
+      <td>28Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>4.28</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.049110</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>13027.0</td>
+      <td>4.0</td>
+      <td>20.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">Medicine</th>
+      <th>18th</th>
+      <td>Future</td>
+      <td>27Jan2022</td>
+      <td>25Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>4.28</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.049110</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>13027.0</td>
+      <td>4.0</td>
+      <td>20.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>19th</th>
+      <td>Future</td>
+      <td>26Feb2022</td>
+      <td>28Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>3.56</td>
+      <td>0.000049</td>
+      <td>0.000077</td>
+      <td>0.210291</td>
+      <td>0.058932</td>
+      <td>1440</td>
+      <td>0.000</td>
+      <td>13027.0</td>
+      <td>4.0</td>
+      <td>16.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <th>Forecast</th>
+      <th>18th</th>
+      <td>Future</td>
+      <td>27Jan2022</td>
+      <td>26Feb2022</td>
+      <td>126529100</td>
+      <td>SIR-F</td>
+      <td>1.27</td>
+      <td>0.011850</td>
+      <td>0.001822</td>
+      <td>0.092930</td>
+      <td>0.070630</td>
+      <td>1440</td>
+      <td>0.012</td>
+      <td>548.0</td>
+      <td>10.0</td>
+      <td>14.0</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Or, short-cut <code class="docutils literal notranslate"><span class="pre">.fit()</span></code> and <code class="docutils literal notranslate"><span class="pre">.predict()</span></code> with <code class="docutils literal notranslate"><span class="pre">Scenario.fit_predict()</span></code>. We can apply all arguments (of <code class="docutils literal notranslate"><span class="pre">.fit()</span></code> and <code class="docutils literal notranslate"><span class="pre">.predict()</span></code>) to <code class="docutils literal notranslate"><span class="pre">Scenario.fit_predict()</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Or, when you do not need &#39;fit_dict&#39;,</span>
+<span class="c1"># snl.fit_predict(name=&quot;Forecast&quot;).summary(name=&quot;Forecast&quot;)</span>
+</pre></div>
+</div>
+</div>
+<p>To compare this scenario with the other scenarios, we should adjust the last end date with <code class="docutils literal notranslate"><span class="pre">Scenario.adjust_end()</span></code> because the last end date is differenct from the other scenarios at this time.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Adjust the last end dates</span>
+<span class="n">snl</span><span class="o">.</span><span class="n">adjust_end</span><span class="p">()</span>
+<span class="c1"># Show the last phases of all scenarios</span>
+<span class="n">all_df</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">all_df</span><span class="p">[</span><span class="s2">&quot;Scenario&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">last_end_date</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;End&quot;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> scenario: to </span><span class="si">{</span><span class="n">last_end_date</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Main scenario: to 28Feb2022
+Medicine scenario: to 28Feb2022
+Forecast scenario: to 28Feb2022
+</pre></div></div>
+</div>
+<p>Simulate the number of cases of forecast scenario.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="s2">&quot;CFR&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Forecast&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_96_0.png" src="_images/usage_quick_96_0.png" />
+</div>
+</div>
+<p>Compare the number of cases of the all scenario with <code class="docutils literal notranslate"><span class="pre">Scenario.history()</span></code> and variable name.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s2">&quot;Infected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_98_0.png" src="_images/usage_quick_98_0.png" />
+</div>
+</div>
+<p>We can focus on the values in specified date range with the following arguments.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dates</span></code>: tuple of start date and end date</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">past_days</span></code> (integer): how many past days to use in calculation from today (<code class="docutils literal notranslate"><span class="pre">Scenario.today</span></code> property)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">phases</span></code> (list of str): phase names to use in calculation</p></li>
+</ul>
+<p>These arguments are effective with <code class="docutils literal notranslate"><span class="pre">Scenario.history()</span></code>, <code class="docutils literal notranslate"><span class="pre">Scenario.simulate()</span></code>, <code class="docutils literal notranslate"><span class="pre">Scenario.track()</span></code> and <code class="docutils literal notranslate"><span class="pre">Scenario.score()</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the minimum value (from today to future) to set lower limit of y-axis</span>
+<span class="n">lower_limit</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s2">&quot;Infected&quot;</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">(</span><span class="n">snl</span><span class="o">.</span><span class="n">today</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">show_figure</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="c1"># From today to future (no limitation regarding end date)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s2">&quot;Infected&quot;</span><span class="p">,</span> <span class="n">dates</span><span class="o">=</span><span class="p">(</span><span class="n">snl</span><span class="o">.</span><span class="n">today</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="n">lower_limit</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_100_0.png" src="_images/usage_quick_100_0.png" />
+</div>
+</div>
+<p>In the past 20 days. Reference date is today (<code class="docutils literal notranslate"><span class="pre">Scenario.today</span></code> property).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s2">&quot;Infected&quot;</span><span class="p">,</span> <span class="n">past_days</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_102_0.png" src="_images/usage_quick_102_0.png" />
+</div>
+</div>
+<p>In the selected phases. Here, we will show the 3rd, 4th and 5th phase.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s2">&quot;Infected&quot;</span><span class="p">,</span> <span class="n">phases</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;3rd&quot;</span><span class="p">,</span> <span class="s2">&quot;4th&quot;</span><span class="p">,</span> <span class="s2">&quot;5th&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_104_0.png" src="_images/usage_quick_104_0.png" />
+</div>
+</div>
+</section>
+<section id="Compare-the-scenarios">
+<h2>Compare the scenarios<a class="headerlink" href="#Compare-the-scenarios" title="Permalink to this headline"></a></h2>
+<p>We will compare the scenarios with representative values, reproduction number and parameter values. Currently, we can compare the scenarios with the following indexes.</p>
+<ul class="simple">
+<li><p>max(Infected): max value of Infected</p></li>
+<li><p>argmax(Infected): the date when Infected shows max value</p></li>
+<li><p>Infected on …: Infected on the end date of the last phase</p></li>
+<li><p>Fatal on …: Fatal on the end date of the last phase</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">snl</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>max(Infected)</th>
+      <th>argmax(Infected)</th>
+      <th>Confirmed on 28Feb2022</th>
+      <th>Infected on 28Feb2022</th>
+      <th>Fatal on 28Feb2022</th>
+      <th>18th_Rt</th>
+      <th>19th_Rt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Main</th>
+      <td>42412636</td>
+      <td>28Feb2022</td>
+      <td>65050710</td>
+      <td>42412636</td>
+      <td>54106</td>
+      <td>4.28</td>
+      <td>4.28</td>
+    </tr>
+    <tr>
+      <th>Medicine</th>
+      <td>41193638</td>
+      <td>28Feb2022</td>
+      <td>64872345</td>
+      <td>41193638</td>
+      <td>53964</td>
+      <td>4.28</td>
+      <td>3.56</td>
+    </tr>
+    <tr>
+      <th>Forecast</th>
+      <td>1053822</td>
+      <td>28Feb2022</td>
+      <td>4929146</td>
+      <td>1053822</td>
+      <td>96303</td>
+      <td>1.27</td>
+      <td>1.27</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;Infected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_107_0.png" src="_images/usage_quick_107_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;Rt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_108_0.png" src="_images/usage_quick_108_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;rho&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_109_0.png" src="_images/usage_quick_109_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;sigma&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_110_0.png" src="_images/usage_quick_110_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;theta&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_111_0.png" src="_images/usage_quick_111_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="s2">&quot;kappa&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_112_0.png" src="_images/usage_quick_112_0.png" />
+</div>
+</div>
+</section>
+<section id="Change-rate-of-parameters-in-main-scenario">
+<h2>Change rate of parameters in main scenario<a class="headerlink" href="#Change-rate-of-parameters-in-main-scenario" title="Permalink to this headline"></a></h2>
+<p>History of each parameter will be shown. Values will be divided by the values in 0th phase.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">snl</span><span class="o">.</span><span class="n">history_rate</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_114_0.png" src="_images/usage_quick_114_0.png" />
+</div>
+</div>
+</section>
+<section id="Retrospective-analysis">
+<h2>Retrospective analysis<a class="headerlink" href="#Retrospective-analysis" title="Permalink to this headline"></a></h2>
+<p>We can evaluate the impact of measures using past records. How many people were infected if the parameter values have not changed sinse 01Sep2020?</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Perform retrospective analysis</span>
+<span class="n">snl_retro</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">Scenario</span><span class="p">(</span><span class="n">country</span><span class="o">=</span><span class="s2">&quot;Japan&quot;</span><span class="p">)</span>
+<span class="n">snl_retro</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">jhu_data</span><span class="p">)</span>
+<span class="n">snl_retro</span><span class="o">.</span><span class="n">retrospective</span><span class="p">(</span>
+    <span class="s2">&quot;01Jan2021&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">cs</span><span class="o">.</span><span class="n">SIRF</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;Retrospective&quot;</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+&lt;SIR-F model: parameter estimation&gt;
+Running optimization with 4 CPUs...
+         2nd phase (15Nov2020 - 23Dec2020): finished  225 trials in 0 min  7 sec
+         4th phase (01Jan2021 - 16Jan2021): finished  257 trials in 0 min  8 sec
+         3rd phase (24Dec2020 - 31Dec2020): finished   79 trials in 0 min  2 sec
+         6th phase (11Feb2021 - 03Apr2021): finished  312 trials in 0 min 10 sec
+         0th phase (06Feb2020 - 08Aug2020): finished  301 trials in 0 min 10 sec
+         7th phase (04Apr2021 - 21Apr2021): finished   40 trials in 0 min  1 sec
+         5th phase (17Jan2021 - 10Feb2021): finished  175 trials in 0 min  5 sec
+        10th phase (25May2021 - 01Jul2021): finished  119 trials in 0 min  3 sec
+         8th phase (22Apr2021 - 06May2021): finished  272 trials in 0 min  8 sec
+         1st phase (09Aug2020 - 14Nov2020): finished  329 trials in 0 min 10 sec
+         9th phase (07May2021 - 24May2021): finished  141 trials in 0 min  4 sec
+        12th phase (28Jul2021 - 06Aug2021): finished  316 trials in 0 min 10 sec
+        11th phase (02Jul2021 - 27Jul2021): finished  309 trials in 0 min 10 sec
+        13th phase (07Aug2021 - 19Aug2021): finished   74 trials in 0 min  2 sec
+        14th phase (20Aug2021 - 31Aug2021): finished  233 trials in 0 min  7 sec
+        16th phase (16Sep2021 - 08Jan2022): finished  321 trials in 0 min 10 sec
+        18th phase (17Jan2022 - 26Jan2022): finished  313 trials in 0 min  9 sec
+        17th phase (09Jan2022 - 16Jan2022): finished  160 trials in 0 min  4 sec
+        15th phase (01Sep2021 - 15Sep2021): finished  369 trials in 0 min 10 sec
+Completed optimization. Total: 0 min 38 sec
+
+&lt;SIR-F model: parameter estimation&gt;
+Running optimization with 1 CPUs...
+        01Jan2021 - 26Jan2022: finished  246 trials in 0 min  7 sec
+Completed optimization. Total: 0 min  7 sec
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the summary of estimation</span>
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Start&quot;</span><span class="p">,</span> <span class="s2">&quot;End&quot;</span><span class="p">,</span> <span class="s2">&quot;ODE&quot;</span><span class="p">,</span> <span class="s2">&quot;Rt&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cs</span><span class="o">.</span><span class="n">SIRF</span><span class="o">.</span><span class="n">PARAMETERS</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;RMSLE&quot;</span><span class="p">,</span> <span class="s2">&quot;Trials&quot;</span><span class="p">,</span> <span class="s2">&quot;Runtime&quot;</span><span class="p">]</span>
+<span class="n">snl_retro</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>Start</th>
+      <th>End</th>
+      <th>ODE</th>
+      <th>Rt</th>
+      <th>theta</th>
+      <th>kappa</th>
+      <th>rho</th>
+      <th>sigma</th>
+      <th>RMSLE</th>
+      <th>Trials</th>
+      <th>Runtime</th>
+    </tr>
+    <tr>
+      <th>Scenario</th>
+      <th>Phase</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="19" valign="top">Main</th>
+      <th>0th</th>
+      <td>06Feb2020</td>
+      <td>08Aug2020</td>
+      <td>SIR-F</td>
+      <td>1.45</td>
+      <td>0.023587</td>
+      <td>0.003536</td>
+      <td>0.132217</td>
+      <td>0.085741</td>
+      <td>1.184152</td>
+      <td>301</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>1st</th>
+      <td>09Aug2020</td>
+      <td>14Nov2020</td>
+      <td>SIR-F</td>
+      <td>0.88</td>
+      <td>0.000028</td>
+      <td>0.000938</td>
+      <td>0.068432</td>
+      <td>0.077213</td>
+      <td>0.148565</td>
+      <td>329</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>2nd</th>
+      <td>15Nov2020</td>
+      <td>23Dec2020</td>
+      <td>SIR-F</td>
+      <td>1.44</td>
+      <td>0.001528</td>
+      <td>0.000866</td>
+      <td>0.090749</td>
+      <td>0.062272</td>
+      <td>0.071365</td>
+      <td>225</td>
+      <td>0 min  7 sec</td>
+    </tr>
+    <tr>
+      <th>3rd</th>
+      <td>24Dec2020</td>
+      <td>31Dec2020</td>
+      <td>SIR-F</td>
+      <td>1.45</td>
+      <td>0.000444</td>
+      <td>0.001334</td>
+      <td>0.106315</td>
+      <td>0.072079</td>
+      <td>0.006782</td>
+      <td>79</td>
+      <td>0 min  2 sec</td>
+    </tr>
+    <tr>
+      <th>4th</th>
+      <td>01Jan2021</td>
+      <td>16Jan2021</td>
+      <td>SIR-F</td>
+      <td>1.74</td>
+      <td>0.000909</td>
+      <td>0.000914</td>
+      <td>0.094815</td>
+      <td>0.053407</td>
+      <td>0.029361</td>
+      <td>257</td>
+      <td>0 min  8 sec</td>
+    </tr>
+    <tr>
+      <th>5th</th>
+      <td>17Jan2021</td>
+      <td>10Feb2021</td>
+      <td>SIR-F</td>
+      <td>0.66</td>
+      <td>0.001136</td>
+      <td>0.001349</td>
+      <td>0.051872</td>
+      <td>0.076712</td>
+      <td>0.059141</td>
+      <td>175</td>
+      <td>0 min  5 sec</td>
+    </tr>
+    <tr>
+      <th>6th</th>
+      <td>11Feb2021</td>
+      <td>03Apr2021</td>
+      <td>SIR-F</td>
+      <td>0.81</td>
+      <td>0.008018</td>
+      <td>0.001586</td>
+      <td>0.058147</td>
+      <td>0.070019</td>
+      <td>0.133665</td>
+      <td>312</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>7th</th>
+      <td>04Apr2021</td>
+      <td>21Apr2021</td>
+      <td>SIR-F</td>
+      <td>1.58</td>
+      <td>0.000991</td>
+      <td>0.000690</td>
+      <td>0.087031</td>
+      <td>0.054386</td>
+      <td>0.012842</td>
+      <td>40</td>
+      <td>0 min  1 sec</td>
+    </tr>
+    <tr>
+      <th>8th</th>
+      <td>22Apr2021</td>
+      <td>06May2021</td>
+      <td>SIR-F</td>
+      <td>1.44</td>
+      <td>0.000068</td>
+      <td>0.000902</td>
+      <td>0.083546</td>
+      <td>0.056928</td>
+      <td>0.012009</td>
+      <td>272</td>
+      <td>0 min  8 sec</td>
+    </tr>
+    <tr>
+      <th>9th</th>
+      <td>07May2021</td>
+      <td>24May2021</td>
+      <td>SIR-F</td>
+      <td>1.14</td>
+      <td>0.004694</td>
+      <td>0.000794</td>
+      <td>0.077863</td>
+      <td>0.067116</td>
+      <td>0.034596</td>
+      <td>141</td>
+      <td>0 min  4 sec</td>
+    </tr>
+    <tr>
+      <th>10th</th>
+      <td>25May2021</td>
+      <td>01Jul2021</td>
+      <td>SIR-F</td>
+      <td>0.59</td>
+      <td>0.017965</td>
+      <td>0.001154</td>
+      <td>0.045297</td>
+      <td>0.074275</td>
+      <td>0.033260</td>
+      <td>119</td>
+      <td>0 min  3 sec</td>
+    </tr>
+    <tr>
+      <th>11th</th>
+      <td>02Jul2021</td>
+      <td>27Jul2021</td>
+      <td>SIR-F</td>
+      <td>1.40</td>
+      <td>0.000208</td>
+      <td>0.000467</td>
+      <td>0.074779</td>
+      <td>0.052793</td>
+      <td>0.054551</td>
+      <td>309</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>12th</th>
+      <td>28Jul2021</td>
+      <td>06Aug2021</td>
+      <td>SIR-F</td>
+      <td>2.87</td>
+      <td>0.000207</td>
+      <td>0.000107</td>
+      <td>0.140566</td>
+      <td>0.048889</td>
+      <td>0.020059</td>
+      <td>316</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>13th</th>
+      <td>07Aug2021</td>
+      <td>19Aug2021</td>
+      <td>SIR-F</td>
+      <td>1.48</td>
+      <td>0.000110</td>
+      <td>0.000176</td>
+      <td>0.112065</td>
+      <td>0.075528</td>
+      <td>0.012195</td>
+      <td>74</td>
+      <td>0 min  2 sec</td>
+    </tr>
+    <tr>
+      <th>14th</th>
+      <td>20Aug2021</td>
+      <td>31Aug2021</td>
+      <td>SIR-F</td>
+      <td>1.39</td>
+      <td>0.000280</td>
+      <td>0.000141</td>
+      <td>0.100273</td>
+      <td>0.072075</td>
+      <td>0.028679</td>
+      <td>233</td>
+      <td>0 min  7 sec</td>
+    </tr>
+    <tr>
+      <th>15th</th>
+      <td>01Sep2021</td>
+      <td>15Sep2021</td>
+      <td>SIR-F</td>
+      <td>0.61</td>
+      <td>0.000030</td>
+      <td>0.000340</td>
+      <td>0.055489</td>
+      <td>0.091368</td>
+      <td>0.033458</td>
+      <td>369</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>16th</th>
+      <td>16Sep2021</td>
+      <td>08Jan2022</td>
+      <td>SIR-F</td>
+      <td>0.42</td>
+      <td>0.000706</td>
+      <td>0.000516</td>
+      <td>0.036507</td>
+      <td>0.086628</td>
+      <td>0.638051</td>
+      <td>321</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>17th</th>
+      <td>09Jan2022</td>
+      <td>16Jan2022</td>
+      <td>SIR-F</td>
+      <td>6.97</td>
+      <td>0.001447</td>
+      <td>0.000051</td>
+      <td>0.249532</td>
+      <td>0.035691</td>
+      <td>0.019121</td>
+      <td>160</td>
+      <td>0 min  4 sec</td>
+    </tr>
+    <tr>
+      <th>18th</th>
+      <td>17Jan2022</td>
+      <td>26Jan2022</td>
+      <td>SIR-F</td>
+      <td>4.55</td>
+      <td>0.000044</td>
+      <td>0.000068</td>
+      <td>0.206090</td>
+      <td>0.045262</td>
+      <td>0.028427</td>
+      <td>313</td>
+      <td>0 min  9 sec</td>
+    </tr>
+    <tr>
+      <th rowspan="5" valign="top">Retrospective</th>
+      <th>0th</th>
+      <td>06Feb2020</td>
+      <td>08Aug2020</td>
+      <td>SIR-F</td>
+      <td>1.45</td>
+      <td>0.023587</td>
+      <td>0.003536</td>
+      <td>0.132217</td>
+      <td>0.085741</td>
+      <td>1.184152</td>
+      <td>301</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>1st</th>
+      <td>09Aug2020</td>
+      <td>14Nov2020</td>
+      <td>SIR-F</td>
+      <td>0.88</td>
+      <td>0.000028</td>
+      <td>0.000938</td>
+      <td>0.068432</td>
+      <td>0.077213</td>
+      <td>0.148565</td>
+      <td>329</td>
+      <td>0 min 10 sec</td>
+    </tr>
+    <tr>
+      <th>2nd</th>
+      <td>15Nov2020</td>
+      <td>23Dec2020</td>
+      <td>SIR-F</td>
+      <td>1.44</td>
+      <td>0.001528</td>
+      <td>0.000866</td>
+      <td>0.090749</td>
+      <td>0.062272</td>
+      <td>0.071365</td>
+      <td>225</td>
+      <td>0 min  7 sec</td>
+    </tr>
+    <tr>
+      <th>3rd</th>
+      <td>24Dec2020</td>
+      <td>31Dec2020</td>
+      <td>SIR-F</td>
+      <td>1.45</td>
+      <td>0.000444</td>
+      <td>0.001334</td>
+      <td>0.106315</td>
+      <td>0.072079</td>
+      <td>0.006782</td>
+      <td>79</td>
+      <td>0 min  2 sec</td>
+    </tr>
+    <tr>
+      <th>4th</th>
+      <td>01Jan2021</td>
+      <td>26Jan2022</td>
+      <td>SIR-F</td>
+      <td>1.45</td>
+      <td>0.000444</td>
+      <td>0.001334</td>
+      <td>0.106315</td>
+      <td>0.072079</td>
+      <td>0.029361</td>
+      <td>257</td>
+      <td>0 min  8 sec</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[54]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># History of reproduction number</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">snl_retro</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s2">&quot;Rt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_118_0.png" src="_images/usage_quick_118_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[55]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># History of Infected</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">snl_retro</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="s2">&quot;Infected&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/usage_quick_119_0.png" src="_images/usage_quick_119_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the representative values</span>
+<span class="n">snl_retro</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[56]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>max(Infected)</th>
+      <th>argmax(Infected)</th>
+      <th>Confirmed on 26Jan2022</th>
+      <th>Infected on 26Jan2022</th>
+      <th>Fatal on 26Jan2022</th>
+      <th>4th_Rt</th>
+      <th>5th_Rt</th>
+      <th>6th_Rt</th>
+      <th>7th_Rt</th>
+      <th>8th_Rt</th>
+      <th>9th_Rt</th>
+      <th>10th_Rt</th>
+      <th>11th_Rt</th>
+      <th>12th_Rt</th>
+      <th>13th_Rt</th>
+      <th>14th_Rt</th>
+      <th>15th_Rt</th>
+      <th>16th_Rt</th>
+      <th>17th_Rt</th>
+      <th>18th_Rt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Main</th>
+      <td>605114</td>
+      <td>26Jan2022</td>
+      <td>2497799</td>
+      <td>605114</td>
+      <td>18669</td>
+      <td>1.74</td>
+      <td>0.66</td>
+      <td>0.81</td>
+      <td>1.58</td>
+      <td>1.44</td>
+      <td>1.14</td>
+      <td>0.59</td>
+      <td>1.4</td>
+      <td>2.87</td>
+      <td>1.48</td>
+      <td>1.39</td>
+      <td>0.61</td>
+      <td>0.42</td>
+      <td>6.97</td>
+      <td>4.55</td>
+    </tr>
+    <tr>
+      <th>Retrospective</th>
+      <td>6743436</td>
+      <td>23Jul2021</td>
+      <td>68330033</td>
+      <td>200374</td>
+      <td>1267219</td>
+      <td>1.45</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage_phases.html" class="btn btn-neutral float-left" title="Usage: S-R trend analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="covsirphy.html" class="btn btn-neutral float-right" title="covsirphy package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, CovsirPhy Development Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
